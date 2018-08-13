@@ -14,6 +14,7 @@ namespace CertifyTheWebTransIP
             // Remove *. from domain when validating a wildcard certificate
             var domain = args[0].Replace("*.", "");
 
+            Console.WriteLine($"Updating TransIP DNS entry for:");
             Console.WriteLine($"Domain: {domain}");
             Console.WriteLine($"DNSName: {args[1]}");
             Console.WriteLine($"Content: {args[2]}");
