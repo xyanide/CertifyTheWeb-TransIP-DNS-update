@@ -11,12 +11,20 @@ namespace CertifyTheWebTransIP
     {
         public static async Task Main(string[] args)
         {
+            // Remove *. from domain when validating a wildcard certificate
+            var domain = args[0].Replace("*.", "");
+
+            Console.WriteLine($"Domain: {domain}");
+            Console.WriteLine($"DNSName: {args[1]}");
+            Console.WriteLine($"Content: {args[2]}");
+
+
             var domainService = new DomainService(ConfigurationManager.AppSettings["UserName"], ClientMode.ReadWrite, ConfigurationManager.AppSettings["PrivateKey"]);
 
-            var domain = await domainService.GetInfoAsync(args[0]);
+            var domainData = await domainService.GetInfoAsync(domain);
 
             // Get the existing dns entries
-            var entries = domain.DnsEntries.ToList();
+            var entries = domainData.DnsEntries.ToList();
 
             // Create a new entry
             entries.Add(new DnsEntry
@@ -28,7 +36,7 @@ namespace CertifyTheWebTransIP
             });
 
             // Save
-            await domainService.SetDnsEntriesAsync(args[0], entries.ToArray());
+            await domainService.SetDnsEntriesAsync(domain, entries.ToArray());
         }
     }
 }

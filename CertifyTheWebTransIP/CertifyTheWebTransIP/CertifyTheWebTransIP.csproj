@@ -22,6 +22,12 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="UpdateDNS.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <Target Name="ApplyXdtConfigTransform" BeforeTargets="_CopyAppConfigFile">
     <PropertyGroup>
       <_SourceWebConfig>$(MSBuildThisFileDirectory)App.config</_SourceWebConfig>
