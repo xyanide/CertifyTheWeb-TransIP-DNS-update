@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Configurations>Debug;Release;Production</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="System.Private.ServiceModel" Version="4.5.3" />
+    <PackageReference Include="TransIP.NET" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.DotNet.Xdt.Tools" Version="2.0.0" />
+
+    <Content Include="App.config" />
+    <Content Include="App.Production.config">
+      <DependentUpon>App.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+
+  <Target Name="ApplyXdtConfigTransform" BeforeTargets="_CopyAppConfigFile">
+    <PropertyGroup>
+      <_SourceWebConfig>$(MSBuildThisFileDirectory)App.config</_SourceWebConfig>
+      <_XdtTransform>$(MSBuildThisFileDirectory)App.$(Configuration).config</_XdtTransform>
+      <_TargetWebConfig>$(IntermediateOutputPath)$(TargetFileName).config</_TargetWebConfig>
+    </PropertyGroup>
+    <Exec Command="dotnet transform-xdt --xml &quot;$(_SourceWebConfig)&quot; --transform &quot;$(_XdtTransform)&quot; --output &quot;$(_TargetWebConfig)&quot;" Condition="Exists('$(_XdtTransform)')" />
+    <ItemGroup>
+      <AppConfigWithTargetPath Remove="App.config" />
+      <AppConfigWithTargetPath Include="$(IntermediateOutputPath)$(TargetFileName).config">
+        <TargetPath>$(TargetFileName).config</TargetPath>
+      </AppConfigWithTargetPath>
+    </ItemGroup>
+  </Target>
+</Project>
