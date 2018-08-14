@@ -1,3 +1,3 @@
-﻿cd /D D:\certificates\transipdns 
+cd /D D:\certificates\transipdns
 
-CertifyTheWebTransIP.exe %*
+CertifyTheWebTransIP.exe "update" %*

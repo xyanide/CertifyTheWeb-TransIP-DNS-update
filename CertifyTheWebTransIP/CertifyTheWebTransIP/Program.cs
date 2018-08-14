@@ -11,14 +11,18 @@ namespace CertifyTheWebTransIP
     {
         public static async Task Main(string[] args)
         {
+            bool isDelete = args[0] == "delete";
             // Remove *. from domain when validating a wildcard certificate
-            var domain = args[0].Replace("*.", "");
+            var domain = args[1].Replace("*.", string.Empty);
+            // Remove the domain part from the entry name
+            var dnsEntryName = args[2].Replace($".{domain}", string.Empty);
+            var dnsEntryContent = !isDelete ? args[3] : null;
 
-            Console.WriteLine($"Updating TransIP DNS entry for:");
+            Console.WriteLine($"{(isDelete ? "Deleting" : "Updating")} TransIP DNS entry for:");
             Console.WriteLine($"Domain: {domain}");
-            Console.WriteLine($"DNSName: {args[1]}");
-            Console.WriteLine($"Content: {args[2]}");
-
+            Console.WriteLine($"DNSName: {dnsEntryName}");
+            if(!isDelete)
+                Console.WriteLine($"Content: {dnsEntryContent}");
 
             var domainService = new DomainService(ConfigurationManager.AppSettings["UserName"], ClientMode.ReadWrite, ConfigurationManager.AppSettings["PrivateKey"]);
 
@@ -27,14 +31,26 @@ namespace CertifyTheWebTransIP
             // Get the existing dns entries
             var entries = domainData.DnsEntries.ToList();
 
-            // Create a new entry
-            entries.Add(new DnsEntry
+            if (isDelete)
             {
-                Name = args[1],
-                Type = DnsEntryType.TXT,
-                Expire = 3600, // 1 hour
-                Content = args[2]
-            });
+                var toRemoveEntry = entries.FirstOrDefault(x => x.Name == dnsEntryName && x.Type == DnsEntryType.TXT);
+                if (toRemoveEntry != null)
+                {
+                    entries.Remove(toRemoveEntry);
+                    Console.WriteLine($"Removed DNS entry {toRemoveEntry.Name}, with content {toRemoveEntry.Content} and type {toRemoveEntry.Type}");
+                }
+            }
+            else
+            {
+                // Create a new entry
+                entries.Add(new DnsEntry
+                {
+                    Name = dnsEntryName,
+                    Type = DnsEntryType.TXT,
+                    Expire = 60, // 1 minute
+                    Content = dnsEntryContent
+                });
+            }
 
             // Save
             await domainService.SetDnsEntriesAsync(domain, entries.ToArray());

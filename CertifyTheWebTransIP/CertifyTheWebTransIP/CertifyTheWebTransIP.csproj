@@ -23,6 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="DeleteDNS.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="UpdateDNS.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
