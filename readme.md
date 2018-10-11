@@ -26,4 +26,4 @@ Configure CertifyTheWeb as follows
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENCE.md](LICENCE.md) file for details
+This project is licensed under the MIT License - see the [LICENCE.md](licence.md) file for details
