@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CertifyTheWebTransIP", "CertifyTheWebTransIP\CertifyTheWebTransIP.csproj", "{2F68E1C7-0CB8-44B1-B740-96BE2636F6FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CertifyTheWebTransIP", "CertifyTheWebTransIP\CertifyTheWebTransIP.csproj", "{2F68E1C7-0CB8-44B1-B740-96BE2636F6FC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5F16A483-2B2A-49E0-A821-C794D7324848}"
+	ProjectSection(SolutionItems) = preProject
+		..\licence.md = ..\licence.md
+		..\readme.md = ..\readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
