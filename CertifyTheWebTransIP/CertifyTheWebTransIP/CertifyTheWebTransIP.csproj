@@ -30,19 +30,4 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-  <Target Name="ApplyXdtConfigTransform" BeforeTargets="_CopyAppConfigFile">
-    <PropertyGroup>
-      <_SourceWebConfig>$(MSBuildThisFileDirectory)App.config</_SourceWebConfig>
-      <_XdtTransform>$(MSBuildThisFileDirectory)App.$(Configuration).config</_XdtTransform>
-      <_TargetWebConfig>$(IntermediateOutputPath)$(TargetFileName).config</_TargetWebConfig>
-    </PropertyGroup>
-    <Exec Command="dotnet transform-xdt --xml &quot;$(_SourceWebConfig)&quot; --transform &quot;$(_XdtTransform)&quot; --output &quot;$(_TargetWebConfig)&quot;" Condition="Exists('$(_XdtTransform)')" />
-    <ItemGroup>
-      <AppConfigWithTargetPath Remove="App.config" />
-      <AppConfigWithTargetPath Include="$(IntermediateOutputPath)$(TargetFileName).config">
-        <TargetPath>$(TargetFileName).config</TargetPath>
-      </AppConfigWithTargetPath>
-    </ItemGroup>
-  </Target>
 </Project>
